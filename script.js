@@ -19,7 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const file = fileInput.files[0];
       if (!file) return;
 
-      // Читаем файл как Base64, чтобы избежать проблем с безопасностью и путями
       const reader = new FileReader();
       reader.onload = (e) => {
         preview.src = e.target.result;
@@ -51,25 +50,26 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   pdfButton.addEventListener("click", () => {
+    // 1. Сначала объявляем все переменные
     const element = document.getElementById("pdf-content");
-    const container = document.body; // Объявляем container
+    const container = document.body; 
+    const nameInput = document.querySelector(".name-input");
+    const name = nameInput?.value.trim() || "Trainingsplan";
+    const safeName = name.replace(/[/\\?%*:|"<>]/g, '-');
 
     if (typeof html2pdf === 'undefined') {
       alert("Библиотека html2pdf не загружена!");
       return;
     }
 
-    // Включаем режим генерации (скрываем лишнее через CSS)
+    // 2. Включаем режим подготовки PDF (скрываем кнопки через CSS)
     container.classList.add("is-generating-pdf");
 
-    // Переносим текст из полей в атрибуты для корректного отображения в PDF
+    // 3. Синхронизируем значения полей (чтобы текст попал в PDF)
     element.querySelectorAll('input, textarea').forEach(el => {
       el.setAttribute('value', el.value);
       if (el.tagName === 'TEXTAREA') el.textContent = el.value;
     });
-
-    const name = document.querySelector(".name-input")?.value.trim() || "Trainingsplan";
-    const safeName = name.replace(/[/\\?%*:|"<>]/g, '-');
 
     const opt = {
       margin: 10,
@@ -79,13 +79,14 @@ document.addEventListener("DOMContentLoaded", () => {
       jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
     };
 
-    // Запуск генерации один раз
+    // 4. Запускаем генерацию ОДИН раз
     html2pdf().set(opt).from(element).save()
       .then(() => {
+        // Убираем режим подготовки после сохранения
         container.classList.remove("is-generating-pdf");
       })
       .catch(err => {
-        console.error("Ошибка:", err);
+        console.error("Ошибка генерации:", err);
         container.classList.remove("is-generating-pdf");
       });
   });

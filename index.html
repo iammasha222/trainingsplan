@@ -28,13 +28,13 @@
           </div>
           <div class="center">
             <div class="field">
-              <label>Übung:</label><input type="text" class="u-name" />
+              <label>Übungsname:</label><input type="text" class="u-name" />
             </div>
             <div class="field">
               <label>Gewicht:</label><input type="text" class="u-weight" />
             </div>
             <div class="field">
-              <label>Dauer:</label><input type="text" class="u-duration" />
+              <label>Wiederholungen:</label><input type="text" class="u-duration" />
             </div>
           </div>
           <div class="right">
@@ -49,10 +49,11 @@
       <button class="add">+ Block hinzufügen</button>
       <form action="generate_pdf.php" method="POST" style="display: inline">
         <input type="hidden" name="jsonData" id="jsonData" />
-        <button type="submit" class="pdf-btn">PDF erstellen (PHP)</button>
+        <button type="submit" class="pdf-btn">PDF erstellen</button>
       </form>
     </div>
 
     <script src="script.js"></script>
   </body>
 </html>
+

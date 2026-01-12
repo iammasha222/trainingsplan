@@ -29,7 +29,7 @@ body {
     align-items: flex-start;
     margin-bottom: 20px;
     padding-bottom: 10px;
-    border-bottom: 1px solid #eee; /* Разделитель между упражнениями */
+    border-bottom: 1px solid #eee; 
 }
 
 /* Left */
@@ -125,14 +125,12 @@ button {
   }
 }
 
-/* Специальные правила для генерации */
 .is-generating-pdf #pdf-content {
     width: 794px !important;
     background: white !important;
     display: block !important;
 }
 
-/* Шапка в PDF: имя слева, лого справа */
 .is-generating-pdf .header {
     display: flex !important;
     flex-direction: row !important;
@@ -155,10 +153,9 @@ button {
     height: auto !important;
 }
 
-/* Блоки упражнений в PDF */
 .is-generating-pdf .training-block {
     display: flex !important;
-    flex-direction: row !important; /* Всегда в ряд */
+    flex-direction: row !important; 
     align-items: flex-start !important;
     page-break-inside: avoid !important;
     break-inside: avoid !important;
@@ -175,7 +172,6 @@ button {
     display: block !important;
 }
 
-/* Скрываем кнопки управления в PDF */
 .is-generating-pdf .add, 
 .is-generating-pdf .pdf, 
 .is-generating-pdf .delete, 
@@ -184,3 +180,4 @@ button {
 .is-generating-pdf input[type="file"] {
     display: none !important;
 }
+

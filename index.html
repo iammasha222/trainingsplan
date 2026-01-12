@@ -7,41 +7,39 @@
   </head>
   <body>
     <div id="pdf-content">
-      <!-- Header -->
       <div class="header">
-        <input class="name-input" placeholder="Name eingeben" />
+        <input
+          class="name-input"
+          placeholder="Name eingeben"
+          id="userNameField"
+        />
         <img src="img/thumbnail.jpg" class="logo" alt="Logo" />
       </div>
+      <button class="delete_all" id="clearAll">Alles löschen</button>
 
-      <!-- Blocks -->
       <div id="blocks">
         <div class="training-block template">
           <div class="left">
-            <img class="preview" alt="Vorschau" />
-            <input type="file" accept="image/*" />
+            <img class="preview" alt="Bild" />
+            <input type="file" accept="image/*" class="file-input" />
             <div class="delete_button">
               <button class="delete">Block löschen</button>
             </div>
           </div>
-
           <div class="center">
             <div class="field">
-              <label>Übungsname:</label>
-              <input type="text" />
+              <label>Übung:</label><input type="text" class="u-name" />
             </div>
             <div class="field">
-              <label>Gewicht:</label>
-              <input type="text" />
+              <label>Gewicht:</label><input type="text" class="u-weight" />
             </div>
             <div class="field">
-              <label>Dauer:</label>
-              <input type="text" />
+              <label>Dauer:</label><input type="text" class="u-duration" />
             </div>
           </div>
-
           <div class="right">
-            <label name="notizen">Notizen</label>
-            <textarea></textarea>
+            <label>Notizen</label>
+            <textarea class="u-notes"></textarea>
           </div>
         </div>
       </div>
@@ -49,10 +47,12 @@
 
     <div class="actions">
       <button class="add">+ Block hinzufügen</button>
-      <button class="pdf">PDF erstellen</button>
+      <form action="generate_pdf.php" method="POST" style="display: inline">
+        <input type="hidden" name="jsonData" id="jsonData" />
+        <button type="submit" class="pdf-btn">PDF erstellen (PHP)</button>
+      </form>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="script.js"></script>
   </body>
 </html>

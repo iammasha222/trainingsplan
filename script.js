@@ -15,11 +15,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 weight: block.querySelector(".u-weight").value,
                 duration: block.querySelector(".u-duration").value,
                 notes: block.querySelector(".u-notes").value,
-                imgData: block.querySelector(".preview").src // Base64 картинки
+                imgData: block.querySelector(".preview").src
             });
         });
         localStorage.setItem("trainingPlan", JSON.stringify(data));
-        // Подготавливаем скрытое поле для PHP
+        // PHP data(hidden)
         jsonDataInput.value = JSON.stringify(data);
     }
 
@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     document.getElementById("clearAll").addEventListener("click", () => {
-        if(confirm("Löschen?")) { localStorage.clear(); location.reload(); }
+        if(confirm("Wollen Sie wirklich alles löschen?")) { localStorage.clear(); location.reload(); }
     });
 
     // Загрузка
@@ -87,5 +87,6 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
         setupBlockEvents(template);
     }
-    saveData(); // Инициализация jsonData
+    saveData();
 });
+

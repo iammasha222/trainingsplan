@@ -130,14 +130,20 @@ button {
 
 .is-generating-pdf .delete, 
 .is-generating-pdf .add,
+.is-generating-pdf .pdf,
 .is-generating-pdf input[type="file"],
-.is-generating-pdf .pdf {
-    display: none !important; /* Прячем кнопки и поле выбора файла */
+.is-generating-pdf .delete_button {
+  display: none !important;
 }
 
 .is-generating-pdf input, 
 .is-generating-pdf textarea {
-    border: none;
-    background: transparent;
-    padding: 0;
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
 }
+
+.is-generating-pdf .name-input {
+  border-bottom: none !important;
+}
+

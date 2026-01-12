@@ -1,91 +1,186 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const blocksContainer = document.getElementById("blocks");
-    const template = document.querySelector(".training-block.template");
-    const nameInput = document.getElementById("userNameField");
-    const jsonDataInput = document.getElementById("jsonData");
+body {
+  font-family: Georgia, serif;
+  margin: 40px;
+}
 
-    function saveData() {
-        const data = {
-            userName: nameInput.value,
-            blocks: []
-        };
-        document.querySelectorAll(".training-block:not(.template)").forEach(block => {
-            data.blocks.push({
-                name: block.querySelector(".u-name").value,
-                weight: block.querySelector(".u-weight").value,
-                duration: block.querySelector(".u-duration").value,
-                notes: block.querySelector(".u-notes").value,
-                imgData: block.querySelector(".preview").src // Base64 картинки
-            });
-        });
-        localStorage.setItem("trainingPlan", JSON.stringify(data));
-        // Подготавливаем скрытое поле для PHP
-        jsonDataInput.value = JSON.stringify(data);
-    }
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
 
-    function createNewBlock(data = null) {
-        const newBlock = template.cloneNode(true);
-        newBlock.classList.remove("template");
-        newBlock.style.display = "flex";
+.name-input {
+  font-size: 20px;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  width: 300px;
+}
 
-        if (data) {
-            newBlock.querySelector(".u-name").value = data.name || "";
-            newBlock.querySelector(".u-weight").value = data.weight || "";
-            newBlock.querySelector(".u-duration").value = data.duration || "";
-            newBlock.querySelector(".u-notes").value = data.notes || "";
-            if (data.imgData && data.imgData.startsWith("data:image")) {
-                newBlock.querySelector(".preview").src = data.imgData;
-                newBlock.querySelector(".preview").style.display = "block";
-            }
-        }
+.logo {
+  width: 80px;
+}
 
-        setupBlockEvents(newBlock);
-        return newBlock;
-    }
+/* Block */
+.training-block {
+  display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee; /* Разделитель между упражнениями */
+}
 
-    function setupBlockEvents(block) {
-        block.querySelector(".file-input").addEventListener("change", (e) => {
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                const img = block.querySelector(".preview");
-                img.src = event.target.result;
-                img.style.display = "block";
-                saveData();
-            };
-            reader.readAsDataURL(e.target.files[0]);
-        });
+/* Left */
+.left {
+  width: 25%;
+}
+.center {
+     width: 40%; 
+}
+.right { 
+    width: 30%; 
+    text-align: center;
+}
 
-        block.querySelector(".delete").addEventListener("click", () => {
-            if (document.querySelectorAll(".training-block:not(.template)").length > 1) {
-                block.remove();
-            } else {
-                block.querySelectorAll("input, textarea").forEach(i => i.value = "");
-                block.querySelector(".preview").style.display = "none";
-            }
-            saveData();
-        });
+.delete_button{
+    padding-top: 10px;
+}
 
-        block.querySelectorAll("input, textarea").forEach(i => i.addEventListener("input", saveData));
-    }
+.preview {
+  width: 150px;
+  height: auto;
+  object-fit: cover;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  display: block;
+}
 
-    document.querySelector(".add").addEventListener("click", () => {
-        blocksContainer.appendChild(createNewBlock());
-        saveData();
-    });
+/* Center */
+.field {
+  margin-bottom: 10px;
+}
 
-    document.getElementById("clearAll").addEventListener("click", () => {
-        if(confirm("Löschen?")) { localStorage.clear(); location.reload(); }
-    });
+.field label {
+  display: inline-block;
+  width: 120px;
+}
 
-    // Загрузка
-    const saved = localStorage.getItem("trainingPlan");
-    if (saved) {
-        const data = JSON.parse(saved);
-        nameInput.value = data.userName;
-        data.blocks.forEach(b => blocksContainer.appendChild(createNewBlock(b)));
-        template.style.display = "none";
-    } else {
-        setupBlockEvents(template);
-    }
-    saveData(); // Инициализация jsonData
-});
+.field input {
+  border: none;
+  border-bottom: 1px solid #ccc;
+  width: 200px;
+}
+
+/* Right */
+.right textarea {
+  width: 100%;
+    resize: none;
+    min-height: 60px;
+    border:none;
+}
+
+/* Buttons */
+.actions {
+  margin-top: 20px;
+}
+
+button {
+  padding: 8px 14px;
+  margin-right: 10px;
+}
+
+.delete {
+  grid-column: span 3;
+  justify-self: end;
+  background: none;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.delete_all {
+    background-color: #ff4444;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    border-radius: 4px;
+}
+
+.delete_all:hover {
+    background-color: #cc0000;
+}
+/* PDF cleanup */
+@media print {
+  button,
+  input[type="file"] {
+    display: none;
+  }
+
+  input,
+  textarea {
+    border: none;
+  }
+}
+
+/* Специальные правила для генерации */
+.is-generating-pdf #pdf-content {
+    width: 794px !important;
+    background: white !important;
+    display: block !important;
+}
+
+/* Шапка в PDF: имя слева, лого справа */
+.is-generating-pdf .header {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    border-bottom: 2px solid #000 !important;
+    padding-bottom: 10px !important;
+    margin-bottom: 20px !important;
+}
+
+.is-generating-pdf .name-input {
+    font-size: 24px !important;
+    font-weight: bold !important;
+    border: none !important;
+    flex: 1 !important;
+}
+
+.is-generating-pdf .logo {
+    width: 100px !important;
+    height: auto !important;
+}
+
+/* Блоки упражнений в PDF */
+.is-generating-pdf .training-block {
+    display: flex !important;
+    flex-direction: row !important; /* Всегда в ряд */
+    align-items: flex-start !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    border-bottom: 1px solid #ccc !important;
+    padding: 15px 0 !important;
+}
+
+.is-generating-pdf .left {
+    width: 160px !important;
+}
+
+.is-generating-pdf .preview {
+    width: 150px !important;
+    display: block !important;
+}
+
+/* Скрываем кнопки управления в PDF */
+.is-generating-pdf .add, 
+.is-generating-pdf .pdf, 
+.is-generating-pdf .delete, 
+.is-generating-pdf .delete_all,
+.is-generating-pdf .delete_button,
+.is-generating-pdf input[type="file"] {
+    display: none !important;
+}

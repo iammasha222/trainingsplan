@@ -24,10 +24,6 @@ body {
 
 /* Block */
 .training-block {
-  page-break-inside: avoid !important;
-  break-inside: avoid !important;
-  background-color: #ffffff;
-  position: relative;
   display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -53,29 +49,13 @@ body {
 }
 
 .preview {
-  width: 100px;
+  width: 150px;
   height: auto;
   object-fit: cover;
   border: 1px solid #ccc;
   margin-bottom: 10px;
   display: block;
 }
-
-.dots {
-  display: grid;
-  grid-template-columns: repeat(2, 20px);
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.dot {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-}
-
-.dot.green { background: #6bbf2d; }
-.dot.grey { background: #666; }
 
 /* Center */
 .field {
@@ -119,6 +99,19 @@ button {
   cursor: pointer;
 }
 
+.delete_all {
+    background-color: #ff4444;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    border-radius: 4px;
+}
+
+.delete_all:hover {
+    background-color: #cc0000;
+}
 /* PDF cleanup */
 @media print {
   button,
@@ -130,29 +123,64 @@ button {
   textarea {
     border: none;
   }
-  .training-block {
-        margin-top: 10px;
-        margin-bottom: 10px;
-    }
 }
 
-.is-generating-pdf .delete, 
-.is-generating-pdf .add,
-.is-generating-pdf .pdf,
-.is-generating-pdf input[type="file"],
-.is-generating-pdf .delete_button {
-  display: none !important;
+/* Специальные правила для генерации */
+.is-generating-pdf #pdf-content {
+    width: 794px !important;
+    background: white !important;
+    display: block !important;
 }
 
-.is-generating-pdf input, 
-.is-generating-pdf textarea {
-  border: none !important;
-  background: transparent !important;
-  padding: 0 !important;
+/* Шапка в PDF: имя слева, лого справа */
+.is-generating-pdf .header {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    border-bottom: 2px solid #000 !important;
+    padding-bottom: 10px !important;
+    margin-bottom: 20px !important;
 }
 
 .is-generating-pdf .name-input {
-  border-bottom: none !important;
+    font-size: 24px !important;
+    font-weight: bold !important;
+    border: none !important;
+    flex: 1 !important;
 }
 
+.is-generating-pdf .logo {
+    width: 100px !important;
+    height: auto !important;
+}
 
+/* Блоки упражнений в PDF */
+.is-generating-pdf .training-block {
+    display: flex !important;
+    flex-direction: row !important; /* Всегда в ряд */
+    align-items: flex-start !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    border-bottom: 1px solid #ccc !important;
+    padding: 15px 0 !important;
+}
+
+.is-generating-pdf .left {
+    width: 160px !important;
+}
+
+.is-generating-pdf .preview {
+    width: 150px !important;
+    display: block !important;
+}
+
+/* Скрываем кнопки управления в PDF */
+.is-generating-pdf .add, 
+.is-generating-pdf .pdf, 
+.is-generating-pdf .delete, 
+.is-generating-pdf .delete_all,
+.is-generating-pdf .delete_button,
+.is-generating-pdf input[type="file"] {
+    display: none !important;
+}

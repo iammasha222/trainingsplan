@@ -41,7 +41,11 @@ body {
 }
 .right { 
     width: 30%; 
-    text-align: left; /* Чтобы Notizen не уезжали в бок */
+    text-align: center;
+}
+
+.delete_button{
+    padding-top: 10px;
 }
 
 .preview {
@@ -90,6 +94,7 @@ body {
   width: 100%;
     resize: none;
     min-height: 60px;
+    border:none;
 }
 
 /* Buttons */

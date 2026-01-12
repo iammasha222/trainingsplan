@@ -168,7 +168,11 @@ document.addEventListener("DOMContentLoaded", () => {
       filename: `${safeName}_Trainingsplan.pdf`,
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: { scale: 2, useCORS: true, allowTaint: true },
-      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+      pagebreak: { 
+        mode: ['avoid-all', 'css', 'legacy'], 
+        avoid: '.training-block' 
+      }
     }).from(element).save().then(() => {
       container.classList.remove("is-generating-pdf");
     });
@@ -177,3 +181,4 @@ document.addEventListener("DOMContentLoaded", () => {
   // Запуск загрузки
   loadData();
 });
+

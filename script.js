@@ -4,11 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const blocksContainer = document.getElementById("blocks");
   const template = document.querySelector(".training-block.template");
 
-  // Проверка: найдены ли кнопки
-  if (!addButton || !pdfButton) {
-    console.error("Кнопки не найдены! Проверьте классы .add и .pdf в HTML.");
-    return;
-  }
+  if (!addButton || !pdfButton) return;
 
   function setupBlock(block) {
     setupImagePreview(block);
@@ -23,23 +19,21 @@ document.addEventListener("DOMContentLoaded", () => {
       const file = fileInput.files[0];
       if (!file) return;
 
-      if (preview.src) {
-        URL.revokeObjectURL(preview.src);
-      }
-
-      preview.src = URL.createObjectURL(file);
-      preview.style.display = "block";
+      // Читаем файл как Base64, чтобы избежать проблем с безопасностью и путями
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        preview.src = e.target.result;
+        preview.style.display = "block";
+      };
+      reader.readAsDataURL(file);
     });
   }
 
   function setupDeleteButton(block) {
     const deleteBtn = block.querySelector(".delete");
     if (!deleteBtn) return;
-
     deleteBtn.addEventListener("click", () => {
-      if (blocksContainer.children.length > 1) {
-        block.remove();
-      }
+      if (blocksContainer.children.length > 1) block.remove();
     });
   }
 
@@ -48,56 +42,51 @@ document.addEventListener("DOMContentLoaded", () => {
   addButton.addEventListener("click", () => {
     const newBlock = template.cloneNode(true);
     newBlock.classList.remove("template");
-
-    newBlock.querySelectorAll("input").forEach(input => input.value = "");
-    newBlock.querySelectorAll("textarea").forEach(t => t.value = "");
-
+    newBlock.querySelectorAll("input, textarea").forEach(el => el.value = "");
     const preview = newBlock.querySelector(".preview");
     preview.src = "";
     preview.style.display = "none";
-
     setupBlock(newBlock);
     blocksContainer.appendChild(newBlock);
   });
 
   pdfButton.addEventListener("click", () => {
     const element = document.getElementById("pdf-content");
-    
-    container.classList.add("is-generating-pdf");
-    // Проверка наличия библиотеки
+    const container = document.body; // Объявляем container
+
     if (typeof html2pdf === 'undefined') {
-      alert("Ошибка: Библиотека html2pdf не загружена!");
+      alert("Библиотека html2pdf не загружена!");
       return;
     }
 
+    // Включаем режим генерации (скрываем лишнее через CSS)
+    container.classList.add("is-generating-pdf");
+
+    // Переносим текст из полей в атрибуты для корректного отображения в PDF
     element.querySelectorAll('input, textarea').forEach(el => {
-        el.setAttribute('value', el.value);
-        if (el.tagName === 'TEXTAREA') el.textContent = el.value;
+      el.setAttribute('value', el.value);
+      if (el.tagName === 'TEXTAREA') el.textContent = el.value;
     });
 
-    const nameInput = document.querySelector(".name-input");
-    const name = nameInput?.value.trim() || "Trainingsplan";
-
-    // Очищаем имя файла от запрещенных символов
+    const name = document.querySelector(".name-input")?.value.trim() || "Trainingsplan";
     const safeName = name.replace(/[/\\?%*:|"<>]/g, '-');
 
     const opt = {
       margin: 10,
       filename: `${safeName}_Trainingsplan.pdf`,
       image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { 
-        scale: 2, 
-        useCORS: true, // Важно для загрузки картинок
-        logging: true  // Включает логи в консоли для отладки
-      },
+      html2canvas: { scale: 2, useCORS: true, allowTaint: true },
       jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
     };
-html2pdf().set(opt).from(element).save().then(() => {
-    // 4. Убираем класс после завершения, чтобы кнопки вернулись на экран
-    container.classList.remove("is-generating-pdf");
-  });
-    // Запуск генерации
+
+    // Запуск генерации один раз
     html2pdf().set(opt).from(element).save()
-      .catch(err => console.error("Ошибка генерации PDF:", err));
+      .then(() => {
+        container.classList.remove("is-generating-pdf");
+      })
+      .catch(err => {
+        console.error("Ошибка:", err);
+        container.classList.remove("is-generating-pdf");
+      });
   });
 });

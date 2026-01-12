@@ -63,11 +63,17 @@ document.addEventListener("DOMContentLoaded", () => {
   pdfButton.addEventListener("click", () => {
     const element = document.getElementById("pdf-content");
     
+    container.classList.add("is-generating-pdf");
     // Проверка наличия библиотеки
     if (typeof html2pdf === 'undefined') {
       alert("Ошибка: Библиотека html2pdf не загружена!");
       return;
     }
+
+    element.querySelectorAll('input, textarea').forEach(el => {
+        el.setAttribute('value', el.value);
+        if (el.tagName === 'TEXTAREA') el.textContent = el.value;
+    });
 
     const nameInput = document.querySelector(".name-input");
     const name = nameInput?.value.trim() || "Trainingsplan";
@@ -86,7 +92,10 @@ document.addEventListener("DOMContentLoaded", () => {
       },
       jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
     };
-
+html2pdf().set(opt).from(element).save().then(() => {
+    // 4. Убираем класс после завершения, чтобы кнопки вернулись на экран
+    container.classList.remove("is-generating-pdf");
+  });
     // Запуск генерации
     html2pdf().set(opt).from(element).save()
       .catch(err => console.error("Ошибка генерации PDF:", err));

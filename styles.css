@@ -5,10 +5,10 @@ body {
 
 /* Header */
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
 }
 
 .name-input {
@@ -24,26 +24,33 @@ body {
 
 /* Block */
 .training-block {
-  display: grid;
-  grid-template-columns: 180px 1fr 280px;
-  gap: 30px;
-  margin-bottom: 40px;
-  page-break-inside: avoid;
+  display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee; /* Разделитель между упражнениями */
 }
 
 /* Left */
 .left {
-  display: flex;
-  flex-direction: column;
+  width: 25%;
+}
+.center {
+     width: 40%; 
+}
+.right { 
+    width: 30%; 
+    text-align: left; /* Чтобы Notizen не уезжали в бок */
 }
 
 .preview {
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: auto;
   object-fit: cover;
   border: 1px solid #ccc;
   margin-bottom: 10px;
-  display: none;
+  display: block;
 }
 
 .dots {
@@ -81,7 +88,8 @@ body {
 /* Right */
 .right textarea {
   width: 100%;
-  height: 80px;
+    resize: none;
+    min-height: 60px;
 }
 
 /* Buttons */
@@ -113,4 +121,18 @@ button {
   textarea {
     border: none;
   }
+}
+
+.is-generating-pdf .delete, 
+.is-generating-pdf .add,
+.is-generating-pdf input[type="file"],
+.is-generating-pdf .pdf {
+    display: none !important; /* Прячем кнопки и поле выбора файла */
+}
+
+.is-generating-pdf input, 
+.is-generating-pdf textarea {
+    border: none;
+    background: transparent;
+    padding: 0;
 }

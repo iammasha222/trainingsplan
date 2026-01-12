@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Trainingsplan Generator</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="pdf-content">
+      <!-- Header -->
+      <div class="header">
+        <input class="name-input" placeholder="Name eingeben" />
+        <img src="img/thumbnail.jpg" class="logo" alt="Logo" />
+      </div>
+
+      <!-- Blocks -->
+      <div id="blocks">
+        <!-- TEMPLATE BLOCK -->
+        <div class="training-block template">
+          <!-- Left -->
+          <div class="left">
+            <img class="preview" alt="Vorschau" />
+            <input type="file" accept="image/*" />
+          </div>
+
+          <!-- Center -->
+          <div class="center">
+            <div class="field">
+              <label>Übungsname:</label>
+              <input type="text" />
+            </div>
+            <div class="field">
+              <label>Gewicht:</label>
+              <input type="text" />
+            </div>
+            <div class="field">
+              <label>Dauer:</label>
+              <input type="text" />
+            </div>
+          </div>
+
+          <!-- Right -->
+          <div class="right">
+            <label>Notizen</label>
+            <textarea></textarea>
+          </div>
+
+          <button class="delete">Block löschen</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="add">+ Block hinzufügen</button>
+      <button class="pdf">PDF erstellen</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
